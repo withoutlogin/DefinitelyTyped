@@ -9,8 +9,8 @@
 
 /// <reference types="node" />
 
-import * as events from "events";
-import * as stream from "stream";
+import * as events from 'events';
+import * as stream from 'stream';
 
 declare namespace Ffmpeg {
     interface FfmpegCommandLogger {
@@ -105,7 +105,7 @@ declare namespace Ffmpeg {
         index: number;
         codec_name?: string;
         codec_long_name?: string;
-        profile?: number;
+        profile?: number | string;
         codec_type?: string;
         codec_time_base?: string;
         codec_tag_string?: string;
@@ -118,7 +118,7 @@ declare namespace Ffmpeg {
         sample_aspect_ratio?: string;
         display_aspect_ratio?: string;
         pix_fmt?: string;
-        level?: string;
+        level?: string | number;
         color_range?: string;
         color_space?: string;
         color_transfer?: string;
@@ -133,12 +133,12 @@ declare namespace Ffmpeg {
         time_base?: string;
         start_pts?: number;
         start_time?: number;
-        duration_ts?: string;
-        duration?: string;
-        bit_rate?: string;
+        duration_ts?: string | number;
+        duration?: string | number;
+        bit_rate?: string | number;
         max_bit_rate?: string;
         bits_per_raw_sample?: string;
-        nb_frames?: string;
+        nb_frames?: string | number;
         nb_read_frames?: string;
         nb_read_packets?: string;
         sample_fmt?: string;
@@ -177,7 +177,7 @@ declare namespace Ffmpeg {
         size?: number;
         bit_rate?: number;
         probe_score?: number;
-        tags?: any[];
+        tags?: object;
     }
 
     interface ScreenshotsConfig {
@@ -354,8 +354,14 @@ declare namespace Ffmpeg {
         outputOption(...options: string[]): FfmpegCommand;
         outputOptions(options: string[]): FfmpegCommand;
         outputOptions(...options: string[]): FfmpegCommand;
-        filterGraph(spec: string | FilterSpecification | Array<string | FilterSpecification>, map?: string[] | string): FfmpegCommand;
-        complexFilter(spec: string | FilterSpecification | Array<string | FilterSpecification>, map?: string[] | string): FfmpegCommand;
+        filterGraph(
+            spec: string | FilterSpecification | Array<string | FilterSpecification>,
+            map?: string[] | string,
+        ): FfmpegCommand;
+        complexFilter(
+            spec: string | FilterSpecification | Array<string | FilterSpecification>,
+            map?: string[] | string,
+        ): FfmpegCommand;
 
         // options/misc
         usingPreset(proset: string | GetPreset): FfmpegCommand;
@@ -389,7 +395,7 @@ declare namespace Ffmpeg {
         saveToFile(output: string): FfmpegCommand;
         save(output: string): FfmpegCommand;
         writeToStream(stream: stream.Writable, options?: { end?: boolean }): stream.Writable;
-        pipe(stream?: stream.Writable, options?: { end?: boolean }): stream.Writable|stream.PassThrough;
+        pipe(stream?: stream.Writable, options?: { end?: boolean }): stream.Writable | stream.PassThrough;
         stream(stream: stream.Writable, options?: { end?: boolean }): stream.Writable;
         takeScreenshots(config: number | ScreenshotsConfig, folder?: string): FfmpegCommand;
         thumbnail(config: number | ScreenshotsConfig, folder?: string): FfmpegCommand;
@@ -406,7 +412,12 @@ declare namespace Ffmpeg {
     function ffprobe(file: string, callback: (err: any, data: FfprobeData) => void): void;
     function ffprobe(file: string, index: number, callback: (err: any, data: FfprobeData) => void): void;
     function ffprobe(file: string, options: string[], callback: (err: any, data: FfprobeData) => void): void; // tslint:disable-line unified-signatures
-    function ffprobe(file: string, index: number, options: string[], callback: (err: any, data: FfprobeData) => void): void;
+    function ffprobe(
+        file: string,
+        index: number,
+        options: string[],
+        callback: (err: any, data: FfprobeData) => void,
+    ): void;
 }
 declare function Ffmpeg(options?: Ffmpeg.FfmpegCommandOptions): Ffmpeg.FfmpegCommand;
 declare function Ffmpeg(input?: string | stream.Readable, options?: Ffmpeg.FfmpegCommandOptions): Ffmpeg.FfmpegCommand;
